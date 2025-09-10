@@ -1,0 +1,27 @@
+cmake_minimum_required(VERSION 3.5)
+project(UnscentedKF)
+
+add_definitions(-std=c++11)
+
+set(CXX_FLAGS "-Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_FLAGS}")
+
+set(sources
+    src/main.cpp
+    src/tools.cpp
+    src/ukf.cpp
+)
+
+include_directories("/usr/include/eigen3")
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    include_directories(/usr/local/include)
+    include_directories(/usr/local/opt/openssl/include)
+    link_directories(/usr/local/lib)
+    link_directories(/usr/local/opt/openssl/lib)
+    link_directories(/usr/local/Cellar/libuv/1*/lib)
+endif()
+
+add_executable(UnscentedKF ${sources})
+target_link_libraries(UnscentedKF z ssl uv uWS)
+
